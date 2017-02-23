@@ -97,6 +97,7 @@ int main(int, char**)
     UpdateWindow(hwnd);
     while (msg.message != WM_QUIT)
     {
+		long tickCount = GetTickCount();
         if (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
         {
             TranslateMessage(&msg);
@@ -145,7 +146,11 @@ int main(int, char**)
             g_pd3dDevice->EndScene();
         }
         g_pd3dDevice->Present(NULL, NULL, NULL, NULL);
-    }
+		long sleepMs = 17 - (GetTickCount() - tickCount);
+		if (sleepMs > 0){
+			Sleep(sleepMs);
+		}
+	}
 
     ImGui_ImplDX9_Shutdown();
     if (g_pd3dDevice) g_pd3dDevice->Release();

@@ -5,7 +5,7 @@
 #include "imgui_impl_glfw.h"
 #include <stdio.h>
 #include <GLFW/glfw3.h>
-
+#include <windows.h> 
 static void error_callback(int error, const char* description)
 {
     fprintf(stderr, "Error %d: %s\n", error, description);
@@ -40,7 +40,8 @@ int main(int, char**)
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
-        glfwPollEvents();
+		long tickCount = GetTickCount();
+		glfwPollEvents();
         ImGui_ImplGlfw_NewFrame();
 
         // 1. Show a simple window
@@ -79,7 +80,11 @@ int main(int, char**)
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui::Render();
         glfwSwapBuffers(window);
-    }
+		long sleepMs = 17 - (GetTickCount() - tickCount);
+		if (sleepMs > 0){
+			Sleep(sleepMs);
+		}
+	}
 
     // Cleanup
     ImGui_ImplGlfw_Shutdown();

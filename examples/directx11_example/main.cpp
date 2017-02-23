@@ -147,7 +147,8 @@ int main(int, char**)
     ZeroMemory(&msg, sizeof(msg));
     while (msg.message != WM_QUIT)
     {
-        if (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
+		long tickCount = GetTickCount();
+		if (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
@@ -187,7 +188,11 @@ int main(int, char**)
         g_pd3dDeviceContext->ClearRenderTargetView(g_mainRenderTargetView, (float*)&clear_col);
         ImGui::Render();
         g_pSwapChain->Present(0, 0);
-    }
+		long sleepMs = 17 - (GetTickCount() - tickCount);
+		if (sleepMs > 0){
+			Sleep(sleepMs);
+		}
+	}
 
     ImGui_ImplDX11_Shutdown();
     CleanupDeviceD3D();

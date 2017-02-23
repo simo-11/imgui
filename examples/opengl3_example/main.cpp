@@ -48,7 +48,8 @@ int main(int, char**)
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
-        glfwPollEvents();
+		long tickCount = GetTickCount();
+		glfwPollEvents();
         ImGui_ImplGlfwGL3_NewFrame();
 
         // 1. Show a simple window
@@ -87,7 +88,11 @@ int main(int, char**)
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui::Render();
         glfwSwapBuffers(window);
-    }
+		long sleepMs = 17 -(GetTickCount() - tickCount);
+		if (sleepMs > 0){
+			Sleep(sleepMs);
+		}
+	}
 
     // Cleanup
     ImGui_ImplGlfwGL3_Shutdown();
